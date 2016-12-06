@@ -33,6 +33,9 @@
 <script>
 import axios from 'axios'
 import { InputGroup, ResultPanel } from './components'
+import util from './util'
+const { store } = util
+
 export default {
   name: 'app',
   data () {
@@ -46,7 +49,9 @@ export default {
       this.funds.push({code: '', amount: ''})
     },
     removeInput () {
-      if (this.funds.length > 1) this.funds.pop()
+      if (this.funds.length > 1) { this.funds.pop() }
+      // save funds combination
+      store.set(this.funds)
     },
     onChangeCode (index, newCode) {
       this.funds = [
@@ -77,11 +82,16 @@ export default {
       .then((resp) => {
         if (resp.data !== 'error') {
           this.result = resp.data
+          // save funds combination
+          store.set(this.funds)
         } else {
           this.result = '哪儿输错了'
         }
       })
     }
+  },
+  created () {
+    this.funds = store.get() || [{code: '', amount: ''}]
   },
   components: {
     InputGroup,
