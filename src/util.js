@@ -6,6 +6,9 @@ export default {
     },
     get () {
       return JSON.parse(localStorage.getItem('funds'))
+    },
+    clear () {
+      localStorage.clear()
     }
   }
 }
