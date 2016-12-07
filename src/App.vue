@@ -22,7 +22,8 @@
       </div>
       <result-panel
         :result="result"
-        v-if="result"
+        :loading="loading"
+        v-if="result || loading"
       >
       </result-panel>
     </div>
@@ -41,7 +42,8 @@ export default {
   data () {
     return {
       funds: [{code: '', amount: ''}],
-      result: 0
+      result: 0,
+      loading: false
     }
   },
   methods: {
@@ -76,10 +78,12 @@ export default {
     calc () {
       // 想来想去还是在js做成{code: amount}的形式吧
       // 这样在后端也许能省点事（比如code有重复的情况)
+      this.loading = true
       var result = {}
       this.funds.map((item) => { result[item.code] = item.amount })
       axios.post('/api', {funds: result})
       .then((resp) => {
+        this.loading = false
         if (resp.data !== 'error') {
           this.result = resp.data
           // save funds combination
@@ -87,6 +91,11 @@ export default {
         } else {
           this.result = '哪儿输错了'
         }
+      })
+      .catch((err) => {
+        this.loading = false
+        console.log(err)
+        this.result = '网络错误'
       })
     }
   },
