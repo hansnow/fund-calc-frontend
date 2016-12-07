@@ -15,12 +15,12 @@ before_install:
   - mkdir -p fund-calc/frontend
   - cp -R dist/ fund-calc/frontend && cd fund-calc
   - docker build -t hansnow/fund .
-  - docker run -d --name fund hansnow/fund
+  - docker run -d --name fund hansnow/fund-calc
   - docker ps -a
 
 script:
   - echo 'finish'
 
 after_success:
-  - docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+  - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
   - docker push hansnow/fund-calc
