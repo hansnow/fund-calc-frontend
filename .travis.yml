@@ -1,0 +1,22 @@
+sudo: required
+
+language: node_js
+
+node_js:
+  - "6"
+
+services:
+  - docker
+
+before_install:
+  - git clone https://github.com/hansnow/fund-calc
+  - npm install
+  - npm run build
+  - mkdir -p fund-calc/frontend
+  - cp -R dist/ fund-calc/frontend && cd fund-calc
+  - docker build -t hansnow/fund .
+  - docker run -d --name fund hansnow/fund
+  - docker ps -a
+
+script:
+  - echo 'finish'
