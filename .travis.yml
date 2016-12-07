@@ -13,7 +13,7 @@ before_install:
   - npm install
   - npm run build
   - mkdir -p fund-calc/frontend
-  - cp -R dist/ fund-calc/frontend && cd fund-calc
+  - cp -R dist/* fund-calc/frontend && cd fund-calc
   - docker build -t hansnow/fund-calc .
   - docker run -d --name fund hansnow/fund-calc
   - docker ps -a
