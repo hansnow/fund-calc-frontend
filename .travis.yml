@@ -20,3 +20,7 @@ before_install:
 
 script:
   - echo 'finish'
+
+after_success:
+  - docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+  - docker push hansnow/fund-calc
