@@ -1,5 +1,5 @@
 <template>
-  <div class="w3-container">
+  <div :class="[{'w3-bottombar':!isLast}, 'w3-container', 'w3-border-blue']">
     <div class="w3-third">
       <div class="w3-group w3-margin">
         <label class="w3-label">基金名称</label>
@@ -32,7 +32,7 @@
         loading: false
       }
     },
-    props: ['index', 'code', 'amount'],
+    props: ['index', 'code', 'amount', 'is-last'],
     methods: {
       changeCode (newCode) {
         this.$emit('changeCode', this.index, newCode)

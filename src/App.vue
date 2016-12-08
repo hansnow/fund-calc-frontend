@@ -1,6 +1,6 @@
 <template>
-  <div id="app" class="w3-margin-top">
-    <div class="w3-third">&nbsp;</div>
+  <div id="app">
+    <div class="w3-third w3-hide-small">&nbsp;</div>
     <div class="w3-border w3-third">
       <div class="w3-container w3-blue">
         <h2>Calculator</h2>
@@ -10,6 +10,7 @@
           :index="index"
           :code="fund.code"
           :amount="fund.amount"
+          :is-last="index+1 === funds.length"
           @changeCode="onChangeCode"
           @changeAmount="onChangeAmount"
         >
