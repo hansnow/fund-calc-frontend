@@ -33,9 +33,9 @@
 </template>
 
 <script>
-import axios from 'axios'
 import { InputGroup, ResultPanel } from './components'
 import util from './util'
+import { getSum } from './service'
 const { store } = util
 
 export default {
@@ -76,28 +76,43 @@ export default {
         ...this.funds.slice(index + 1)
       ]
     },
-    calc () {
+    async calc () {
       // 想来想去还是在js做成{code: amount}的形式吧
       // 这样在后端也许能省点事（比如code有重复的情况)
       this.loading = true
       var result = {}
       this.funds.map((item) => { result[item.code] = item.amount })
-      axios.post('/api', {funds: result})
-      .then((resp) => {
-        this.loading = false
-        if (resp.data !== 'error') {
-          this.result = resp.data
-          // save funds combination
+
+      try {
+        const {data} = await getSum(result)
+        if (data !== 'error') {
+          this.result = data
           store.set(this.funds)
         } else {
           this.result = '哪儿输错了'
         }
-      })
-      .catch((err) => {
-        this.loading = false
-        console.log(err)
+      } catch (err) {
         this.result = '网络错误'
-      })
+      }
+      this.loading = false
+
+      // original code
+      // axios.post('/api', {funds: result})
+      // .then((resp) => {
+      //   this.loading = false
+      //   if (resp.data !== 'error') {
+      //     this.result = resp.data
+      //     // save funds combination
+      //     store.set(this.funds)
+      //   } else {
+      //     this.result = '哪儿输错了'
+      //   }
+      // })
+      // .catch((err) => {
+      //   this.loading = false
+      //   console.log(err)
+      //   this.result = '网络错误'
+      // })
     }
   },
   created () {

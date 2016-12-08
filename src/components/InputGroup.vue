@@ -23,7 +23,7 @@
 </template>
 
 <script>
-  import axios from 'axios'
+  import { getFundName } from '../service'
   export default {
     name: 'input_group',
     data () {
@@ -37,32 +37,42 @@
       changeCode (newCode) {
         this.$emit('changeCode', this.index, newCode)
         if (newCode.length === 6) {
-          this.getFundName(newCode)
+          this._getFundName(newCode)
         }
       },
       changeAmount (newAmount) {
         this.$emit('changeAmount', this.index, newAmount)
       },
-      getFundName (fundCode) {
+      async _getFundName (fundCode) {
         this.loading = true
-        axios.post('/api/get_fund_name', {fund: fundCode})
-        .then((resp) => {
-          this.loading = false
-          if (resp.data) {
-            this.name = resp.data
-          } else {
-            this.name = 'Not Found'
-          }
-        })
-        .catch((err) => {
-          this.loading = false
-          this.name = `Network Error: ${err}`
-        })
+        try {
+          const {data} = await getFundName(fundCode)
+          if (data) this.name = data
+          else this.name = 'Not Found'
+        } catch (err) {
+          this.name = err.toString()
+        }
+        this.loading = false
+
+        // original code
+        // axios.post('/api/get_fund_name', {fund: fundCode})
+        // .then((resp) => {
+        //   this.loading = false
+        //   if (resp.data) {
+        //     this.name = resp.data
+        //   } else {
+        //     this.name = 'Not Found'
+        //   }
+        // })
+        // .catch((err) => {
+        //   this.loading = false
+        //   this.name = `Network Error: ${err}`
+        // })
       }
     },
     created () {
       if (this.code.length === 6) {
-        this.getFundName(this.code)
+        this._getFundName(this.code)
       }
     }
   }
