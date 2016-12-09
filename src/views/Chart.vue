@@ -1,15 +1,11 @@
 <template>
-  <div id="chart-detail">
-    <div class="w3-third w3-hide-small">&nbsp;</div>
-    <div class="w3-third">
-      <div class="container">
-        <chart
-          :chart-data="chartData"
-          :value="value"
-        ></chart>
-        <p v-if="loading">loading</p>
-      </div>
-    </div>
+  <div v-if="loading" class="loading">
+  </div>
+  <div v-else class="container">
+    <chart
+      :chart-data="chartData"
+      :value="value"
+    ></chart>
   </div>
 </template>
 
@@ -47,4 +43,12 @@
     }
   }
 </script>
+
+<style scoped>
+  .loading {
+    height: 100vh;
+    width: 100vw;
+    background: url(../../static/spinner_squares.svg) no-repeat center center;
+  }
+</style>
 

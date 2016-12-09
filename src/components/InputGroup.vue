@@ -1,17 +1,18 @@
 <template>
   <div :class="[{'w3-bottombar':!isLast}, 'w3-container', 'w3-border-blue']">
+    <div class="w3-container">
     <div class="w3-half">
       <div class="w3-group w3-margin">
         <label class="w3-label">基金名称</label>
         <p v-if="loading"><img src="../../static/spinner_squares.svg" style="width: 24px"></p>
         <p v-else>
-          <router-link :to="{ path: 'chart', query: { fund: code }}">
+          <a @click="chartShow = !chartShow" href="javascript: void(0)">
             <img v-if="name && name !== 'Not Found'"
               src="../../static/line_chart.png"
               style="vertical-align: text-top;height: 20px"
               alt=""
             />
-          </router-link>
+          </a>
           &nbsp;{{name}}
         </p>
       </div>
@@ -28,17 +29,34 @@
         <input :value="amount" @input="changeAmount($event.target.value)" class="w3-input" type="text">
       </div>
     </div>
+    </div>
+    <div class="w3-container">
+      <transition name="chart" @before-enter="fetchChartData" @after-leave="chartLoading=true">
+        <div v-if="chartShow" class="chart">
+          <div v-if="chartLoading" style="background: url(../../static/spinner_squares.svg) no-repeat center center;height: 100%;"></div>
+          <div v-else style="text-align: center;">
+            <chart :chart-data="chartData" :value="chartValue"></chart>
+            <router-link :to="{ path: 'chart', query: { fund: this.code }}">查看大图</router-link>
+          </div>
+        </div>
+      </transition>
+    </div>
   </div>
 </template>
 
 <script>
-  import { getFundName } from '../service'
+  import { getFundName, getFundNav } from '../service'
+  import Chart from './Chart'
   export default {
     name: 'input_group',
     data () {
       return {
         name: '',
-        loading: false
+        loading: false,
+        chartShow: false,
+        chartLoading: true,
+        chartData: [],
+        chartValue: 0
       }
     },
     props: ['index', 'code', 'amount', 'is-last'],
@@ -62,27 +80,38 @@
           this.name = err.toString()
         }
         this.loading = false
-
-        // original code
-        // axios.post('/api/get_fund_name', {fund: fundCode})
-        // .then((resp) => {
-        //   this.loading = false
-        //   if (resp.data) {
-        //     this.name = resp.data
-        //   } else {
-        //     this.name = 'Not Found'
-        //   }
-        // })
-        // .catch((err) => {
-        //   this.loading = false
-        //   this.name = `Network Error: ${err}`
-        // })
+      },
+      async fetchChartData () {
+        try {
+          const { data } = await getFundNav(this.code)
+          this.chartData = data.chartData
+          this.chartValue = data.value
+        } catch (err) {
+          console.log(err)
+        }
+        this.chartLoading = false
       }
     },
     created () {
       if (this.code.length === 6) {
         this._getFundName(this.code)
       }
+    },
+    components: {
+      Chart
     }
   }
 </script>
+
+<style scoped>
+  .chart {
+    height: 310px;
+    overflow: hidden;
+  }
+  .chart-enter, .chart-leave-active {
+    height: 0
+  }
+  .chart-enter-active, .chart-leave-active {
+    transition: height .3s ease;
+  }
+</style>
