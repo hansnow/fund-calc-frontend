@@ -1,6 +1,6 @@
 <template>
   <div :class="[{'w3-bottombar':!isLast}, 'w3-container', 'w3-border-blue']">
-    <div class="w3-third">
+    <div class="w3-half">
       <div class="w3-group w3-margin">
         <label class="w3-label">基金名称</label>
         <p v-if="loading"><img src="../../static/spinner_squares.svg" style="width: 24px"></p>
@@ -16,13 +16,13 @@
         </p>
       </div>
     </div>
-    <div class="w3-third">
+    <div class="w3-quarter">
       <div class="w3-group w3-margin">
         <label class="w3-label">基金代码</label>
         <input :value="code" @input="changeCode($event.target.value)" class="w3-input" type="text">
       </div>
     </div>
-    <div class="w3-third">
+    <div class="w3-quarter">
       <div class="w3-group w3-margin">
         <label class="w3-label">份额</label>
         <input :value="amount" @input="changeAmount($event.target.value)" class="w3-input" type="text">
