@@ -313,7 +313,6 @@
       // 创建图表
       const ctx = document.getElementById('chart')
       this.chartInstance = new Chart(ctx, this.config)
-      window.lineChart = this.chartInstance
     }
   }
 </script>
