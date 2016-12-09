@@ -1,34 +1,39 @@
 <template>
   <div id="app">
-    <div class="w3-third w3-hide-small">&nbsp;</div>
-    <div class="w3-border w3-third">
-      <div class="w3-container w3-blue">
-        <h2>Calculator</h2>
-      </div>
-      <div v-for="(fund, index) in funds">
-        <input-group
-          :index="index"
-          :code="fund.code"
-          :amount="fund.amount"
-          :is-last="index+1 === funds.length"
-          @changeCode="onChangeCode"
-          @changeAmount="onChangeAmount"
+    <template v-if="$route.matched.length">
+      <router-view></router-view>
+    </template>
+    <template v-else>
+      <div class="w3-third w3-hide-small">&nbsp;</div>
+      <div class="w3-border w3-third">
+        <div class="w3-container w3-blue">
+          <h2>Calculator</h2>
+        </div>
+        <div v-for="(fund, index) in funds">
+          <input-group
+            :index="index"
+            :code="fund.code"
+            :amount="fund.amount"
+            :is-last="index+1 === funds.length"
+            @changeCode="onChangeCode"
+            @changeAmount="onChangeAmount"
+          >
+          </input-group>
+        </div>
+        <div class="w3-container w3-margin-bottom">
+          <button @click="addInput" class="w3-btn-block w3-blue">添加一支基金</button>
+          <button @click="removeInput" class="w3-btn-block w3-red">删除一支基金</button>
+          <button @click="calc" class="w3-btn-block w3-green w3-margin-top">计算</button>
+        </div>
+        <result-panel
+          :result="result"
+          :loading="loading"
+          v-if="result || loading"
         >
-        </input-group>
+        </result-panel>
       </div>
-      <div class="w3-container w3-margin-bottom">
-        <button @click="addInput" class="w3-btn-block w3-blue">添加一支基金</button>
-        <button @click="removeInput" class="w3-btn-block w3-red">删除一支基金</button>
-        <button @click="calc" class="w3-btn-block w3-green w3-margin-top">计算</button>
-      </div>
-      <result-panel
-        :result="result"
-        :loading="loading"
-        v-if="result || loading"
-      >
-      </result-panel>
-    </div>
-    <div class="w3-third"></div>
+      <div class="w3-third"></div>
+    </template>
   </div>
 </template>
 

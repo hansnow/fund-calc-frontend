@@ -5,11 +5,13 @@
         <label class="w3-label">基金名称</label>
         <p v-if="loading"><img src="../../static/spinner_squares.svg" style="width: 24px"></p>
         <p v-else>
-          <img v-if="name && name !== 'Not Found'"
-            src="../../static/line_chart.png"
-            style="vertical-align: text-top;height: 20px"
-            alt=""
-          />
+          <router-link :to="{ path: 'chart', query: { fund: code }}">
+            <img v-if="name && name !== 'Not Found'"
+              src="../../static/line_chart.png"
+              style="vertical-align: text-top;height: 20px"
+              alt=""
+            />
+          </router-link>
           &nbsp;{{name}}
         </p>
       </div>
