@@ -1,5 +1,8 @@
 # fund-calc-frontend
 
+## Screenshot
+![screenshot](./screenshots/screenshot.png)
+
 > A Vue.js project
 
 ## Build Setup
