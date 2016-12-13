@@ -267,7 +267,6 @@
         this.chartInstance.data.datasets[0].data = val
         const ctx = document.getElementById('chart')
         this.chartInstance = new Chart(ctx, this.config)
-        window.lineChart = this.chartInstance
       }
     },
     computed: {
