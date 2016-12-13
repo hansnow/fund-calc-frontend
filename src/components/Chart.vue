@@ -1,5 +1,5 @@
 <template>
-  <canvas id="chart"></canvas>
+  <canvas :id="'chart'+index"></canvas>
 </template>
 
 <script>
@@ -261,11 +261,11 @@
         chartInstance: {}
       }
     },
-    props: ['chart-data', 'value'],
+    props: ['chart-data', 'value', 'index'],
     watch: {
       chartData: function (val, oldVal) {
         this.chartInstance.data.datasets[0].data = val
-        const ctx = document.getElementById('chart')
+        const ctx = document.getElementById('chart' + this.index)
         this.chartInstance = new Chart(ctx, this.config)
       }
     },
@@ -310,7 +310,7 @@
       // 加载插件
       Chart.pluginService.register(horizonalLinePlugin)
       // 创建图表
-      const ctx = document.getElementById('chart')
+      const ctx = document.getElementById('chart' + this.index)
       this.chartInstance = new Chart(ctx, this.config)
     }
   }

@@ -35,7 +35,7 @@
         <div v-if="chartShow" class="chart">
           <div v-if="chartLoading" style="background: url(../../static/spinner_squares.svg) no-repeat center center;height: 100%;"></div>
           <div v-else style="text-align: center;">
-            <chart :chart-data="chartData" :value="chartValue"></chart>
+            <chart :chart-data="chartData" :value="chartValue" :index="index"></chart>
             <router-link :to="{ path: 'chart', query: { fund: this.code }}">查看大图</router-link>
           </div>
         </div>
