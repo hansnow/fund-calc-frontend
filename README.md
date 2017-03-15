@@ -1,5 +1,5 @@
 # fund-calc-frontend
-
+[![Build Status](https://travis-ci.org/hansnow/fund-calc-frontend.svg?branch=master)](https://travis-ci.org/hansnow/fund-calc-frontend)
 ## Screenshot
 ![screenshot](./screenshots/screenshot.png)
 
